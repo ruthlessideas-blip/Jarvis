@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JARVIS — Command Center</title>
+  <meta name="description" content="Your personal assistant command center." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='42' fill='none' stroke='%2338e8ff' stroke-width='6'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%2338e8ff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Ambient background -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- Boot overlay -->
+  <div id="boot" class="boot">
+    <div class="boot-core">
+      <div class="reactor small"><span></span><span></span><span></span></div>
+      <div class="boot-text">
+        <div class="boot-title">J.A.R.V.I.S</div>
+        <div class="boot-lines" id="bootLines"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top command bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="reactor tiny"><span></span><span></span><span></span></div>
+      <div class="brand-text">
+        <span class="brand-name">JARVIS</span>
+        <span class="brand-status"><i class="dot"></i> ONLINE</span>
+      </div>
+    </div>
+
+    <div class="omnibar" id="omniWrap">
+      <svg class="omni-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+      <input id="omni" class="omni-input" type="text" autocomplete="off" spellcheck="false"
+             placeholder="Ask Jarvis, run a command, or search the web…  (press  /  )" />
+      <kbd class="omni-kbd">⌘K</kbd>
+    </div>
+
+    <div class="topbar-right">
+      <div class="clock-mini">
+        <span id="clockTime">--:--</span>
+        <span id="clockDate" class="muted"></span>
+      </div>
+      <button class="icon-btn" id="micBtn" title="Voice command (say a request)">
+        <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      </button>
+      <button class="icon-btn" id="settingsBtn" title="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1 id="greeting" class="greeting">Good day.</h1>
+      <p id="subGreeting" class="sub-greeting">Systems nominal. What can I do for you?</p>
+      <div class="hero-chips" id="heroChips"></div>
+    </div>
+    <div class="hero-right">
+      <div class="reactor big" id="reactorBig"><span></span><span></span><span></span><b id="reactorTime">--:--</b></div>
+    </div>
+  </section>
+
+  <!-- Main grid -->
+  <main class="grid">
+    <!-- Column A -->
+    <section class="col">
+      <!-- Tasks -->
+      <article class="card" id="tasksCard">
+        <div class="card-head">
+          <h2>Tasks</h2>
+          <span class="badge" id="taskCount">0</span>
+        </div>
+        <form class="inline-add" id="taskForm">
+          <input id="taskInput" placeholder="Add a task…  (Enter)" autocomplete="off" />
+          <button class="add-btn" type="submit" aria-label="Add task">+</button>
+        </form>
+        <ul class="task-list" id="taskList"></ul>
+        <div class="card-foot" id="taskFoot"></div>
+      </article>
+
+      <!-- Habits -->
+      <article class="card" id="habitsCard">
+        <div class="card-head">
+          <h2>Habits</h2>
+          <button class="ghost-btn" id="addHabitBtn">+ Add</button>
+        </div>
+        <div class="habits" id="habitList"></div>
+      </article>
+    </section>
+
+    <!-- Column B (center) -->
+    <section class="col center-col">
+      <!-- Quick launch -->
+      <article class="card" id="linksCard">
+        <div class="card-head">
+          <h2>Quick Launch</h2>
+          <button class="ghost-btn" id="addLinkBtn">+ Add</button>
+        </div>
+        <div class="links-grid" id="linkGrid"></div>
+      </article>
+
+      <!-- Focus timer -->
+      <article class="card focus-card" id="focusCard">
+        <div class="card-head">
+          <h2>Focus</h2>
+          <div class="seg" id="focusModes">
+            <button data-mode="focus" class="active">Focus</button>
+            <button data-mode="short">Break</button>
+            <button data-mode="long">Long</button>
+          </div>
+        </div>
+        <div class="focus-body">
+          <div class="focus-ring">
+            <svg viewBox="0 0 120 120">
+              <circle class="ring-bg" cx="60" cy="60" r="52"/>
+              <circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"/>
+            </svg>
+            <div class="focus-time" id="focusTime">25:00</div>
+          </div>
+          <div class="focus-controls">
+            <button class="pill primary" id="focusStart">Start</button>
+            <button class="pill" id="focusReset">Reset</button>
+          </div>
+          <div class="focus-meta" id="focusMeta">Sessions today: 0</div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Column C -->
+    <section class="col">
+      <!-- Weather -->
+      <article class="card weather-card" id="weatherCard">
+        <div class="card-head">
+          <h2>Weather</h2>
+          <button class="ghost-btn" id="refreshWeather" title="Refresh">↻</button>
+        </div>
+        <div class="weather-body" id="weatherBody">
+          <div class="weather-loading">Locating…</div>
+        </div>
+        <div class="weather-week" id="weatherWeek"></div>
+      </article>
+
+      <!-- Notes -->
+      <article class="card notes-card" id="notesCard">
+        <div class="card-head">
+          <h2>Scratchpad</h2>
+          <span class="muted tiny" id="notesSaved">saved</span>
+        </div>
+        <textarea id="notes" class="notes-area" placeholder="Jot anything… auto-saved locally."></textarea>
+      </article>
+    </section>
+  </main>
+
+  <!-- Bottom row -->
+  <section class="grid-bottom">
+    <article class="card" id="clocksCard">
+      <div class="card-head"><h2>World Clocks</h2></div>
+      <div class="world-clocks" id="worldClocks"></div>
+    </article>
+
+    <article class="card" id="newsCard">
+      <div class="card-head">
+        <h2>Briefing</h2>
+        <span class="muted tiny">Hacker News · top stories</span>
+      </div>
+      <ul class="news-list" id="newsList"><li class="muted">Loading briefing…</li></ul>
+    </article>
+  </section>
+
+  <footer class="foot">
+    <span>J.A.R.V.I.S · local command center</span>
+    <span id="footTip" class="muted"></span>
+  </footer>
+
+  <!-- Command palette -->
+  <div class="overlay" id="paletteOverlay" hidden>
+    <div class="palette" role="dialog" aria-modal="true">
+      <div class="palette-head">
+        <svg viewBox="0 0 24 24" class="pal-icon"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="paletteInput" placeholder="Type a command…" autocomplete="off" />
+        <kbd>esc</kbd>
+      </div>
+      <ul class="palette-list" id="paletteList"></ul>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div class="overlay" id="settingsOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2>Settings</h2>
+        <button class="icon-btn" id="closeSettings" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span>Your name</span>
+          <input id="setName" placeholder="Auston" />
+        </label>
+        <label class="field">
+          <span>Location (city for weather)</span>
+          <input id="setCity" placeholder="e.g. Austin, or leave blank to auto-detect" />
+        </label>
+        <div class="field">
+          <span>Accent</span>
+          <div class="accent-row" id="accentRow"></div>
+        </div>
+        <label class="field switch-field">
+          <span>24-hour clock</span>
+          <input type="checkbox" id="set24h" />
+        </label>
+        <div class="field">
+          <span>Data</span>
+          <div class="btn-row">
+            <button class="pill" id="exportData">Export backup</button>
+            <button class="pill" id="importData">Import backup</button>
+            <button class="pill danger" id="resetData">Reset all</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot muted tiny">Everything is stored locally on this computer. Nothing leaves your machine except weather &amp; briefing lookups.</div>
+    </div>
+  </div>
+
+  <input type="file" id="importFile" accept="application/json" hidden />
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/habits.js"></script>
+  <script src="js/links.js"></script>
+  <script src="js/focus.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/news.js"></script>
+  <script src="js/worldclocks.js"></script>
+  <script src="js/command.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
