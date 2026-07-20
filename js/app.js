@@ -54,6 +54,7 @@
       J.initVision();
       J.initVoice();
       J.initBrief();
+      J.initGoogle();
       J.initCommand();
       J.initSettings();
 

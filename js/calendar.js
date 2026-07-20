@@ -49,20 +49,31 @@
       const key = J.todayKey(d);
       (s.events[key] || []).forEach(ev => upcoming.push({ key, d, ev }));
     }
+    // merge in Google Calendar events (read-only)
+    (J.googleEvents || []).forEach(ge => {
+      const d = new Date(ge.start);
+      upcoming.push({ key: J.todayKey(d), d, ev: { id: "g:" + ge.id, text: ge.title, google: true, link: ge.link } });
+    });
+    upcoming.sort((a, b) => a.d - b.d);
     if (!upcoming.length) {
       wrap.innerHTML = '<div class="muted tiny" style="padding:4px 2px">No upcoming events. Click a day to add one.</div>';
       return;
     }
-    wrap.replaceChildren(...upcoming.slice(0, 6).map(({ key, d, ev }) => {
+    wrap.replaceChildren(...upcoming.slice(0, 7).map(({ key, d, ev }) => {
       const when = key === J.todayKey() ? "Today"
         : d.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
-      const del = J.el("button", { class: "ag-del", text: "✕",
-        onclick: () => { removeEvent(key, ev.id); } });
-      return J.el("div", { class: "ag-row" }, [
+      const text = J.el("span", { class: "ag-text", text: ev.text });
+      const row = J.el("div", { class: "ag-row" }, [
         J.el("span", { class: "ag-when", text: when }),
-        J.el("span", { class: "ag-text", text: ev.text }),
-        del
+        text
       ]);
+      if (ev.google) {
+        row.appendChild(J.el("span", { class: "g-badge", title: "Google Calendar", text: "G" }));
+        if (ev.link) { text.style.cursor = "pointer"; text.addEventListener("click", () => window.open(ev.link, "_blank")); }
+      } else {
+        row.appendChild(J.el("button", { class: "ag-del", text: "✕", onclick: () => removeEvent(key, ev.id) }));
+      }
+      return row;
     }));
   }
 

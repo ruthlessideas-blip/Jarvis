@@ -17,6 +17,7 @@
     document.getElementById("setVoice").checked = !!s.voice;
     document.getElementById("setPersona").value = s.persona || "jarvis";
     document.getElementById("setAddress").value = s.address || "sir";
+    document.getElementById("setGoogleId").value = s.googleClientId || "";
     populateVoices();
     renderAccents();
     overlay().hidden = false;
@@ -88,6 +89,9 @@
     persona.addEventListener("change", () => { J.state().persona = persona.value; J.save(); });
     const address = document.getElementById("setAddress");
     address.addEventListener("input", () => { J.state().address = address.value.trim() || "sir"; J.save(); });
+
+    const gid = document.getElementById("setGoogleId");
+    gid.addEventListener("input", () => { J.state().googleClientId = gid.value.trim(); J.save(); });
 
     document.getElementById("exportData").addEventListener("click", J.exportData);
     document.getElementById("importData").addEventListener("click", () => document.getElementById("importFile").click());

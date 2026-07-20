@@ -38,7 +38,9 @@ window.J = window.J || {};
     voiceName: "",              // preferred TTS voice
     persona: "jarvis",          // "jarvis" (witty butler) | "plain"
     address: "sir",             // how JARVIS addresses you
-    briefDay: ""                // last date the morning brief ran
+    briefDay: "",               // last date the morning brief ran
+    googleClientId: "",         // Google OAuth Web client id (not secret)
+    googleConnected: false      // hint to auto-reconnect silently on load
   };
 
   let state = load();

@@ -544,6 +544,22 @@ kbd {
 .cap-inner video { width: 100%; border-radius: 12px; background: #000; max-height: 60vh; }
 .cap-controls { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
 
+/* ---------- Inbox (Gmail) ---------- */
+.inbox-list { display: flex; flex-direction: column; }
+.mail-row { display: block; text-decoration: none; color: var(--text); padding: 9px 0; border-bottom: 1px solid var(--line); }
+.mail-row:last-child { border-bottom: none; }
+.mail-row:hover { background: rgba(255,255,255,0.02); }
+.mail-top { display: flex; justify-content: space-between; }
+.mail-from { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.mail-subj { font-size: 13px; margin: 2px 0; }
+.mail-snip { line-height: 1.4; }
+.g-badge {
+  flex: none; width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 10px; font-weight: 700; color: #04202a; background: var(--accent); margin-left: auto;
+}
+.muted.good, #googleStatus.good { color: var(--good); }
+.field code { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 4px; color: var(--accent); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr 1fr; }

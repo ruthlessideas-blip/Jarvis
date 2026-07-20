@@ -13,6 +13,8 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 | **JARVIS AI** 🤖 | A real AI assistant powered by Claude that **hears you, speaks back, and acts**. Talk to it, and it can add tasks, set reminders, create events, start the focus timer, play sounds, pull weather, track crypto, open sites, change the theme, and remember things about you. Click 💬 (or press `j`), type in the command bar, or just say **"Hey JARVIS."** |
 | **Voice** 🎙️ | Click the mic to turn on hands-free mode — JARVIS listens for **"Hey JARVIS …"** and speaks its replies aloud (dry-butler voice by default). Tune the voice, personality, and how it addresses you in Settings. |
 | **Agency** ⚙️ | Ask in plain language — *"remind me to call mom at 3pm", "add a dentist appointment Friday", "start a focus session and play rain", "what's the weather?"* — and JARVIS does it, then confirms. |
+| **Google Calendar** 📆 | Connect your Google account and your real upcoming events show up in the agenda (marked **G**). Ask JARVIS to *"put lunch with Sam on Friday at noon"* and it creates the event on your actual calendar. |
+| **Gmail** 📬 | Your unread inbox appears in an **Inbox** card. Ask *"any important email?"* / *"search email from my landlord"*, or *"email Sam that I'm running late"* — JARVIS reads and sends from your account. |
 | **Web search** 🔎 | JARVIS has live internet access — ask about today's news, prices, scores, or any current fact and it searches the web and answers with what it finds. |
 | **Sight** 👁️ | Show JARVIS an image (upload, **camera** snapshot, **screen** capture, or paste), and it describes or analyzes what it sees. |
 | **Memory** 🧠 | Tell it things (*"remember I prefer morning workouts"*) and it keeps a durable, local memory it draws on in future chats. |
@@ -45,6 +47,31 @@ The AI chat needs an Anthropic API key (it talks to Claude directly from your br
 The key is stored only in this browser's local storage and is sent only to Anthropic's API. The assistant runs on Claude Opus 4.8 with tool use, so it can operate the dashboard for you — not just chat.
 
 > **For full voice + microphone**, run over a local server (`./start.sh`) and open `http://localhost:4173` in **Chrome or Edge**, then allow mic access when prompted. Speaking works from a plain file open too; the "Hey JARVIS" wake word needs localhost/https.
+
+## Connecting Google (Calendar + Gmail)
+
+JARVIS talks to Google directly from your browser — no server involved. You just
+need a free Google OAuth **Client ID** (a one-time setup). It's stored locally and
+your access token never leaves your machine.
+
+1. Go to **console.cloud.google.com** and create (or pick) a project.
+2. **APIs & Services → Library** → enable **Google Calendar API** and **Gmail API**.
+3. **APIs & Services → OAuth consent screen** → choose **External**, fill the basics,
+   and under **Test users** add your own Google address. (Leave it in *Testing* — no
+   Google review needed for personal use.)
+4. **APIs & Services → Credentials → Create Credentials → OAuth client ID** →
+   Application type **Web application**. Under **Authorized JavaScript origins** add
+   exactly the URL you open Jarvis at, e.g. `http://localhost:4173`.
+5. Copy the **Client ID** (ends in `.apps.googleusercontent.com`) into
+   **⚙ Settings → Google**, then click **Connect Google** and approve the scopes.
+
+Now the Inbox and your calendar events populate, and JARVIS can create events and
+send email on your behalf. Because it's the browser token flow, Google may ask you
+to re-approve occasionally (about hourly) — one click. Requires running over
+**localhost/https** (the `start.sh` server), not a plain file open.
+
+> Scopes requested: Calendar events (read/write), Gmail read, Gmail send. You can
+> disconnect and revoke access any time from Settings.
 
 ## Run it
 
@@ -86,9 +113,10 @@ All of your data — tasks, notes, habits, events, shortcuts, and your API key �
 lives in this browser's `localStorage` under the key `jarvis.state.v1`. Nothing
 is uploaded to any server of mine. Outbound requests go only to:
 **open-meteo.com** (weather), **hacker-news** (briefing), **coingecko.com**
-(markets), and **api.anthropic.com** (the AI chat, only when you use it, with
-your own key). Use Settings → **Export backup** to save a copy, or **Reset all**
-to wipe everything.
+(markets), **api.anthropic.com** (the AI chat, only when you use it, with your
+own key), and **Google's APIs** (only if you connect your account). Your Google
+access token lives in memory and is never written to disk. Use Settings →
+**Export backup** to save a copy, or **Reset all** to wipe everything.
 
 ## Make it your own
 

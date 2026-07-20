@@ -118,7 +118,7 @@
         if (resp.stop_reason === "tool_use" && toolUses.length) {
           const results = [];
           for (const tu of toolUses) {
-            const out = J.runTool(tu.name, tu.input);
+            const out = await J.runTool(tu.name, tu.input);
             box.insertBefore(toolLine("⚙ " + out), thinking);
             results.push({ type: "tool_result", tool_use_id: tu.id, content: out });
           }

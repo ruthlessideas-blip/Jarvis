@@ -179,6 +179,15 @@
         <div class="weather-week" id="weatherWeek"></div>
       </article>
 
+      <!-- Inbox (Gmail) -->
+      <article class="card" id="inboxCard">
+        <div class="card-head">
+          <h2>Inbox</h2>
+          <button class="ghost-btn" id="refreshInbox" title="Refresh">↻</button>
+        </div>
+        <div class="inbox-list" id="inboxList"></div>
+      </article>
+
       <!-- Markets -->
       <article class="card" id="marketCard">
         <div class="card-head">
@@ -295,6 +304,15 @@
           <input id="setCity" placeholder="e.g. Austin, or leave blank to auto-detect" />
         </label>
         <div class="field">
+          <span>Google — Calendar &amp; Gmail</span>
+          <input id="setGoogleId" placeholder="Google OAuth Client ID (…apps.googleusercontent.com)" />
+          <div class="btn-row" style="align-items:center">
+            <button class="pill" id="googleConnBtn">Connect Google</button>
+            <span class="muted tiny" id="googleStatus">Not connected</span>
+          </div>
+          <span class="muted tiny">One-time setup: create a Google Cloud project, enable the Calendar &amp; Gmail APIs, make an OAuth <b>Web</b> client with <code>http://localhost:4173</code> as an authorized origin, and paste its Client ID here. See the README.</span>
+        </div>
+        <div class="field">
           <span>Accent</span>
           <div class="accent-row" id="accentRow"></div>
         </div>
@@ -360,6 +378,7 @@
   <script src="js/worldclocks.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/markets.js"></script>
+  <script src="js/google.js"></script>
   <script src="js/agent.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/vision.js"></script>

@@ -38,7 +38,15 @@
     { name: "open_link", description: "Open a website in a new browser tab.",
       input_schema: { type: "object", properties: { url: { type: "string" } }, required: ["url"] } },
     { name: "set_accent", description: "Change the dashboard accent color.",
-      input_schema: { type: "object", properties: { hex: { type: "string", description: "Hex color like #38e8ff" } }, required: ["hex"] } }
+      input_schema: { type: "object", properties: { hex: { type: "string", description: "Hex color like #38e8ff" } }, required: ["hex"] } },
+    { name: "create_google_event", description: "Create a real event on the user's Google Calendar (only if Google is connected).",
+      input_schema: { type: "object", properties: { title: { type: "string" }, start: { type: "string", description: "Start time, ISO or 'YYYY-MM-DD HH:MM' in local time" }, end: { type: "string", description: "Optional end time; defaults to +1 hour" } }, required: ["title", "start"] } },
+    { name: "list_google_events", description: "List the user's upcoming Google Calendar events (next week).",
+      input_schema: { type: "object", properties: {} } },
+    { name: "search_email", description: "Search the user's Gmail and return matching messages (Gmail search syntax allowed).",
+      input_schema: { type: "object", properties: { query: { type: "string" } }, required: ["query"] } },
+    { name: "send_email", description: "Send an email from the user's Gmail account. Confirm the recipient and content with the user first unless they were explicit.",
+      input_schema: { type: "object", properties: { to: { type: "string" }, subject: { type: "string" }, body: { type: "string" } }, required: ["to", "subject", "body"] } }
   ];
 
   // Server-side tools — run on Anthropic's infrastructure (no local executor).
@@ -90,11 +98,32 @@
       return "Added to your scratchpad.";
     },
     open_link: (i) => { let u = i.url; if (!/^https?:\/\//i.test(u)) u = "https://" + u; window.open(u, "_blank"); return `Opening ${u}.`; },
-    set_accent: (i) => { if (/^#?[0-9a-fA-F]{6}$/.test(i.hex)) { J.setAccent(i.hex[0] === "#" ? i.hex : "#" + i.hex); return `Accent updated.`; } return "Give a hex color like #38e8ff."; }
+    set_accent: (i) => { if (/^#?[0-9a-fA-F]{6}$/.test(i.hex)) { J.setAccent(i.hex[0] === "#" ? i.hex : "#" + i.hex); return `Accent updated.`; } return "Give a hex color like #38e8ff."; },
+    // ---- Google (async) ----
+    create_google_event: async (i) => {
+      try { await J.gcalCreate(i.title, i.start, i.end); J.refreshGoogle && J.refreshGoogle(); return `Added to your Google Calendar: “${i.title}”.`; }
+      catch (e) { return "Google Calendar: " + e.message; }
+    },
+    list_google_events: async () => {
+      try {
+        const ev = await J.gcalUpcoming(7);
+        return ev.length ? ev.map(e => `${new Date(e.start).toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })} — ${e.title}`).join(" | ") : "No upcoming Google events.";
+      } catch (e) { return "Google Calendar: " + e.message; }
+    },
+    search_email: async (i) => {
+      try {
+        const m = await J.gmailSearch(i.query);
+        return m.length ? m.map(x => `From ${x.from.replace(/<.*>/, "").replace(/"/g, "").trim()} — ${x.subject}: ${x.snippet.slice(0, 80)}`).join(" | ") : "No matching emails.";
+      } catch (e) { return "Gmail: " + e.message; }
+    },
+    send_email: async (i) => {
+      try { await J.gmailSend(i.to, i.subject, i.body); return `Email sent to ${i.to}.`; }
+      catch (e) { return "Gmail: " + e.message; }
+    }
   };
 
-  J.runTool = function (name, input) {
-    try { return (EX[name] || (() => "Unknown tool."))(input || {}); }
+  J.runTool = async function (name, input) {
+    try { return await (EX[name] || (() => "Unknown tool."))(input || {}); }
     catch (e) { return "Tool error: " + (e.message || e); }
   };
 
@@ -118,6 +147,7 @@
       `You can take real actions with your tools — add tasks, set reminders, create calendar events, start the focus timer, play ambient sounds, check weather, track crypto, open sites, change the theme, and remember facts. When ${name} asks you to do something you have a tool for, DO IT with the tool rather than just describing it. Chain multiple tools when needed. After acting, confirm briefly.`,
       `You have LIVE WEB SEARCH. For anything about current events, recent news, prices, sports, or facts that may have changed since your training, use web_search (and web_fetch to read a page) and answer from what you find. Never say you can't access the internet — you can.`,
       `You can SEE. When ${name} shares an image, screenshot, or camera photo, describe or analyze exactly what is in it.`,
+      (J.googleConnected && J.googleConnected()) ? `Google is connected: you can create real calendar events (create_google_event), read upcoming events (list_google_events), and search or send email (search_email, send_email). ${J.googleContext ? J.googleContext() : ""}` : ``,
       `Your replies may be spoken aloud, so write clean prose — no markdown symbols, bullet characters, or code fences in normal answers.`,
       `Current date & time: ${now.toLocaleString()}.`,
       open.length ? `Open tasks: ${open.slice(0, 12).join("; ")}.` : `No open tasks.`,
