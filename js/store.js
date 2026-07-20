@@ -26,7 +26,11 @@ window.J = window.J || {};
       { name: "Claude",  url: "https://claude.ai",          color: "#d97757" }
     ],
     notes: "",
-    focus: { sessions: 0, day: "" }
+    focus: { sessions: 0, day: "" },
+    events: {},                 // { "YYYY-MM-DD": [ {id, text} ] }
+    coins: ["bitcoin", "ethereum", "solana"],
+    apiKey: "",                 // Anthropic API key (stored locally only)
+    chat: []                    // [{ role, content }]
   };
 
   let state = load();

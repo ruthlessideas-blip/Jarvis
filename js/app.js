@@ -43,10 +43,14 @@
       J.initHabits();
       J.initLinks();
       J.initFocus();
+      J.initSounds();
       J.initNotes();
       J.initWeather();
       J.initNews();
       J.initWorldClocks();
+      J.initCalendar();
+      J.initMarkets();
+      J.initChat();
       J.initCommand();
       J.initSettings();
 

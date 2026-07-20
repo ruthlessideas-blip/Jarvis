@@ -47,6 +47,9 @@
         <span id="clockTime">--:--</span>
         <span id="clockDate" class="muted"></span>
       </div>
+      <button class="icon-btn glow" id="chatBtn" title="Ask JARVIS (AI)">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </button>
       <button class="icon-btn" id="micBtn" title="Voice command (say a request)">
         <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
       </button>
@@ -94,6 +97,20 @@
         </div>
         <div class="habits" id="habitList"></div>
       </article>
+
+      <!-- Calendar -->
+      <article class="card" id="calCard">
+        <div class="card-head">
+          <h2 id="calLabel">Calendar</h2>
+          <div class="cal-nav">
+            <button class="ghost-btn" id="calPrev" aria-label="Previous month">‹</button>
+            <button class="ghost-btn" id="calToday">Today</button>
+            <button class="ghost-btn" id="calNext" aria-label="Next month">›</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="agenda" id="agenda"></div>
+      </article>
     </section>
 
     <!-- Column B (center) -->
@@ -132,6 +149,16 @@
           <div class="focus-meta" id="focusMeta">Sessions today: 0</div>
         </div>
       </article>
+
+      <!-- Focus sounds -->
+      <article class="card" id="soundCard">
+        <div class="card-head">
+          <h2>Focus Sounds</h2>
+          <input type="range" id="soundVol" class="vol" min="0" max="100" title="Volume" />
+        </div>
+        <div class="sound-grid" id="soundGrid"></div>
+        <div class="card-foot muted tiny">Generated locally · tap again to stop</div>
+      </article>
     </section>
 
     <!-- Column C -->
@@ -146,6 +173,18 @@
           <div class="weather-loading">Locating…</div>
         </div>
         <div class="weather-week" id="weatherWeek"></div>
+      </article>
+
+      <!-- Markets -->
+      <article class="card" id="marketCard">
+        <div class="card-head">
+          <h2>Markets</h2>
+          <div class="cal-nav">
+            <button class="ghost-btn" id="addCoin">+ Add</button>
+            <button class="ghost-btn" id="refreshMarket" title="Refresh">↻</button>
+          </div>
+        </div>
+        <div class="market-list" id="marketList"><div class="muted tiny">Loading markets…</div></div>
       </article>
 
       <!-- Notes -->
@@ -179,6 +218,28 @@
     <span>J.A.R.V.I.S · local command center</span>
     <span id="footTip" class="muted"></span>
   </footer>
+
+  <!-- JARVIS AI chat panel -->
+  <aside class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div class="chat-title">
+        <div class="reactor tiny"><span></span><span></span><span></span></div>
+        <div>
+          <div class="chat-name">JARVIS</div>
+          <div class="chat-sub muted tiny">AI assistant</div>
+        </div>
+      </div>
+      <div class="chat-actions">
+        <button class="ghost-btn" id="chatClear" title="Clear conversation">Clear</button>
+        <button class="icon-btn" id="chatClose" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <form class="chat-input-row" id="chatForm">
+      <textarea id="chatInput" rows="1" placeholder="Ask JARVIS anything…  (Enter to send)"></textarea>
+      <button class="pill primary" id="chatSend" type="submit">Send</button>
+    </form>
+  </aside>
 
   <!-- Command palette -->
   <div class="overlay" id="paletteOverlay" hidden>
@@ -216,6 +277,11 @@
           <span>24-hour clock</span>
           <input type="checkbox" id="set24h" />
         </label>
+        <label class="field">
+          <span>JARVIS AI — Anthropic API key</span>
+          <input id="setKey" type="password" placeholder="sk-ant-…  (stored only on this computer)" />
+          <span class="muted tiny">Powers the AI chat. Get one at console.anthropic.com. Sent only to Anthropic, direct from your browser.</span>
+        </label>
         <div class="field">
           <span>Data</span>
           <div class="btn-row">
@@ -238,10 +304,14 @@
   <script src="js/habits.js"></script>
   <script src="js/links.js"></script>
   <script src="js/focus.js"></script>
+  <script src="js/sounds.js"></script>
   <script src="js/notes.js"></script>
   <script src="js/weather.js"></script>
   <script src="js/news.js"></script>
   <script src="js/worldclocks.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/markets.js"></script>
+  <script src="js/chat.js"></script>
   <script src="js/command.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/app.js"></script>

@@ -12,6 +12,7 @@
     const s = J.state();
     document.getElementById("setName").value = s.name || "";
     document.getElementById("setCity").value = s.city || "";
+    document.getElementById("setKey").value = s.apiKey || "";
     document.getElementById("set24h").checked = !!s.clock24;
     renderAccents();
     overlay().hidden = false;
@@ -49,6 +50,9 @@
       J.state().city = city.value; J.save();
       clearTimeout(ct); ct = setTimeout(() => J.loadWeather(), 700);
     });
+
+    const key = document.getElementById("setKey");
+    key.addEventListener("input", () => { J.state().apiKey = key.value.trim(); J.save(); });
 
     const c24 = document.getElementById("set24h");
     c24.addEventListener("change", () => {

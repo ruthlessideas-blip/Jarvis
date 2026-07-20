@@ -7,7 +7,10 @@
   // ---- Command registry ----
   function commands() {
     return [
+      { icon: "🤖", label: "Ask JARVIS (AI chat)", hint: "j", run: () => { closePalette(); J.openChat(); } },
       { icon: "✅", label: "Add task…", hint: "t", run: () => quickPrompt("New task:", v => J.addTask(v) && J.toast("Task added")) },
+      { icon: "📅", label: "Add calendar event…", run: () => { closePalette(); document.querySelector('#calGrid .cal-cell.today')?.click(); } },
+      { icon: "📈", label: "Add crypto ticker…", run: () => { closePalette(); J.addCoin(); } },
       { icon: "📝", label: "New habit…", run: () => quickPrompt("New habit:", v => J.addHabit(v)) },
       { icon: "🔗", label: "Add shortcut…", run: () => document.getElementById("addLinkBtn").click() },
       { icon: "🎯", label: "Start focus timer", hint: "f", run: () => { closePalette(); J.focusToggle(); } },
@@ -46,6 +49,10 @@
     if (/^(weather|forecast)$/.test(low)) { J.loadWeather(); J.toast("Refreshing weather…"); return; }
     if (/^(settings|preferences|config)$/.test(low)) { J.openSettings(); return; }
 
+    // "ask jarvis X" / "jarvis X" / "hey jarvis X"
+    m = low.match(/^(?:hey )?jarvis[,:]?\s*(.*)/) || (/^ask jarvis\s+(.*)/.exec(low));
+    if (m && m[1]) { J.askJarvis(m[1]); return; }
+
     // "search X" / "google X"
     m = low.match(/^(?:search|google|find)\s+(.*)/);
     if (m && m[1]) { open("https://google.com/search?q=" + encodeURIComponent(m[1]), "_blank"); return; }
@@ -54,6 +61,10 @@
     if (/^[\w-]+(\.[\w-]+)+(\/\S*)?$/.test(text) || /^https?:\/\//i.test(text)) {
       open(/^https?:/i.test(text) ? text : "https://" + text, "_blank"); return;
     }
+
+    // A natural-language question, or any free text when the AI is configured -> ask JARVIS
+    const looksLikeQuestion = /\?$/.test(text) || /^(who|what|when|where|why|how|which|can|could|should|would|is|are|do|does|explain|write|draft|summar|help|give)\b/i.test(text);
+    if (J.state().apiKey && (looksLikeQuestion || text.split(/\s+/).length >= 4)) { J.askJarvis(text); return; }
 
     // Fallback -> web search
     open("https://google.com/search?q=" + encodeURIComponent(text), "_blank");
@@ -134,11 +145,12 @@
     document.addEventListener("keydown", (e) => {
       const typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openPalette(); return; }
-      if (e.key === "Escape") { closePalette(); J.closeSettings && J.closeSettings(); }
+      if (e.key === "Escape") { closePalette(); J.closeSettings && J.closeSettings(); J.closeChat && J.closeChat(); }
       if (typing) return;
       if (e.key === "/") { e.preventDefault(); omni.focus(); }
       if (e.key === "t") { e.preventDefault(); document.getElementById("taskInput").focus(); }
       if (e.key === "f") { e.preventDefault(); J.focusToggle(); }
+      if (e.key === "j") { e.preventDefault(); J.openChat(); }
     });
 
     J.openPalette = openPalette;
