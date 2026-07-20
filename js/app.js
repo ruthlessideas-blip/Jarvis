@@ -51,6 +51,7 @@
       J.initCalendar();
       J.initMarkets();
       J.initChat();
+      J.initVision();
       J.initVoice();
       J.initBrief();
       J.initCommand();

@@ -41,6 +41,13 @@
       input_schema: { type: "object", properties: { hex: { type: "string", description: "Hex color like #38e8ff" } }, required: ["hex"] } }
   ];
 
+  // Server-side tools — run on Anthropic's infrastructure (no local executor).
+  // Give JARVIS live web knowledge.
+  J.serverTools = [
+    { type: "web_search_20260209", name: "web_search", max_uses: 5 },
+    { type: "web_fetch_20260209", name: "web_fetch", max_uses: 5 }
+  ];
+
   // ---------- Executors ----------
   const EX = {
     add_task: (i) => J.addTask(i.text) ? `Added task: “${i.text}”.` : "Couldn't add that task.",
@@ -109,6 +116,8 @@
     return [
       persona,
       `You can take real actions with your tools — add tasks, set reminders, create calendar events, start the focus timer, play ambient sounds, check weather, track crypto, open sites, change the theme, and remember facts. When ${name} asks you to do something you have a tool for, DO IT with the tool rather than just describing it. Chain multiple tools when needed. After acting, confirm briefly.`,
+      `You have LIVE WEB SEARCH. For anything about current events, recent news, prices, sports, or facts that may have changed since your training, use web_search (and web_fetch to read a page) and answer from what you find. Never say you can't access the internet — you can.`,
+      `You can SEE. When ${name} shares an image, screenshot, or camera photo, describe or analyze exactly what is in it.`,
       `Your replies may be spoken aloud, so write clean prose — no markdown symbols, bullet characters, or code fences in normal answers.`,
       `Current date & time: ${now.toLocaleString()}.`,
       open.length ? `Open tasks: ${open.slice(0, 12).join("; ")}.` : `No open tasks.`,

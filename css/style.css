@@ -515,6 +515,35 @@ kbd {
 .field.two-col { flex-direction: row; gap: 12px; }
 .field.two-col > .field { flex: 1; }
 
+/* ---------- Chat: images & attach ---------- */
+.msg-img { max-width: 220px; border-radius: 10px; border: 1px solid var(--line); margin-bottom: 2px; }
+.chat-compose { position: relative; border-top: 1px solid var(--line); }
+.chat-pending { display: flex; align-items: center; gap: 8px; padding: 10px 14px 0; }
+.chat-pending[hidden] { display: none; }
+.chat-pending img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line-strong); }
+.chip-x { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 14px; }
+.chip-x:hover { color: var(--danger); }
+.icon-btn.attach { width: 40px; height: 40px; flex: none; }
+.attach-menu {
+  position: absolute; left: 14px; bottom: 64px; z-index: 5;
+  background: var(--panel-solid); border: 1px solid var(--line-strong); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 6px; display: flex; flex-direction: column; min-width: 170px;
+}
+.attach-menu[hidden] { display: none; }
+.attach-menu button {
+  text-align: left; background: none; border: none; color: var(--text); font-size: 13.5px;
+  padding: 9px 12px; border-radius: 8px;
+}
+.attach-menu button:hover { background: var(--accent-soft); color: var(--accent); }
+.chat-input-row { border-top: none; }
+
+/* ---------- Capture modal (camera / screen) ---------- */
+.cap-modal { width: min(680px, 94vw); }
+.cap-inner { background: var(--panel-solid); border: 1px solid var(--line-strong); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); }
+.cap-title { font-size: 14px; margin-bottom: 12px; color: var(--muted); }
+.cap-inner video { width: 100%; border-radius: 12px; background: #000; max-height: 60vh; }
+.cap-controls { display: flex; gap: 10px; justify-content: center; margin-top: 14px; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr 1fr; }

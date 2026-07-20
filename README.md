@@ -13,6 +13,8 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 | **JARVIS AI** 🤖 | A real AI assistant powered by Claude that **hears you, speaks back, and acts**. Talk to it, and it can add tasks, set reminders, create events, start the focus timer, play sounds, pull weather, track crypto, open sites, change the theme, and remember things about you. Click 💬 (or press `j`), type in the command bar, or just say **"Hey JARVIS."** |
 | **Voice** 🎙️ | Click the mic to turn on hands-free mode — JARVIS listens for **"Hey JARVIS …"** and speaks its replies aloud (dry-butler voice by default). Tune the voice, personality, and how it addresses you in Settings. |
 | **Agency** ⚙️ | Ask in plain language — *"remind me to call mom at 3pm", "add a dentist appointment Friday", "start a focus session and play rain", "what's the weather?"* — and JARVIS does it, then confirms. |
+| **Web search** 🔎 | JARVIS has live internet access — ask about today's news, prices, scores, or any current fact and it searches the web and answers with what it finds. |
+| **Sight** 👁️ | Show JARVIS an image (upload, **camera** snapshot, **screen** capture, or paste), and it describes or analyzes what it sees. |
 | **Memory** 🧠 | Tell it things (*"remember I prefer morning workouts"*) and it keeps a durable, local memory it draws on in future chats. |
 | **Morning brief** ☀️ | Tap **Brief me** and JARVIS reads you a spoken rundown: greeting, date, weather, your tasks, today's events, and reminders. Offers itself once a day. |
 | **Reminders** ⏰ | Ask JARVIS to set one; it fires a desktop notification, a spoken alert, and an on-screen toast when due. |
