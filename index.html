@@ -66,6 +66,7 @@
       <p id="subGreeting" class="sub-greeting">Systems nominal. What can I do for you?</p>
       <div class="hero-chips" id="heroChips"></div>
       <div class="hero-actions">
+        <button class="pill" id="missionBtn">🎯 Mission</button>
         <button class="pill" id="briefBtn">☀ Brief me</button>
         <button class="pill" id="askBtn">💬 Talk to JARVIS</button>
       </div>
@@ -276,6 +277,33 @@
   </aside>
   <input type="file" id="imgFile" accept="image/*" hidden />
 
+  <!-- Mission Control panel -->
+  <aside class="mission-panel" id="missionPanel">
+    <div class="chat-head">
+      <div class="chat-title">
+        <div class="reactor tiny"><span></span><span></span><span></span></div>
+        <div>
+          <div class="chat-name">MISSION CONTROL</div>
+          <div class="chat-sub muted tiny" id="missionStatus">idle</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="missionClose" aria-label="Close">✕</button>
+    </div>
+    <div class="mission-body">
+      <form class="mission-launch" id="missionForm">
+        <label class="muted tiny">Give JARVIS a goal — it plans the steps and carries them out.</label>
+        <textarea id="missionGoal" rows="3" placeholder="e.g. Plan my focused morning: add my top 3 tasks, start a 25-minute focus session, and give me the weather plus one headline."></textarea>
+        <button class="pill primary" type="submit">🚀 Launch mission</button>
+        <div class="mission-examples" id="missionExamples"></div>
+      </form>
+      <div class="mission-run" id="missionRun" hidden>
+        <div class="mission-goal-txt" id="missionGoalTxt"></div>
+        <div class="mission-steps" id="missionSteps"></div>
+        <div class="mission-log" id="missionLog"></div>
+      </div>
+    </div>
+  </aside>
+
   <!-- Command palette -->
   <div class="overlay" id="paletteOverlay" hidden>
     <div class="palette" role="dialog" aria-modal="true">
@@ -390,6 +418,7 @@
   <script src="js/vision.js"></script>
   <script src="js/voice.js"></script>
   <script src="js/brief.js"></script>
+  <script src="js/mission.js"></script>
   <script src="js/command.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/app.js"></script>

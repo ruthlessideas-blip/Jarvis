@@ -562,6 +562,59 @@ kbd {
 .muted.good, #googleStatus.good { color: var(--good); }
 .field code { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 4px; color: var(--accent); }
 
+/* ---------- Mission Control ---------- */
+.mission-panel {
+  position: fixed; top: 0; left: 0; height: 100vh; width: min(440px, 94vw); z-index: 56;
+  background: linear-gradient(180deg, rgba(10,17,32,0.98), rgba(8,13,24,0.98));
+  border-right: 1px solid var(--line-strong); box-shadow: 30px 0 60px -20px rgba(0,0,0,0.7);
+  display: flex; flex-direction: column; transform: translateX(-102%);
+  transition: transform 0.32s cubic-bezier(.4,0,.2,1); backdrop-filter: blur(14px);
+}
+.mission-panel.open { transform: translateX(0); }
+.mission-body { flex: 1; overflow-y: auto; padding: 18px; }
+.mission-launch { display: flex; flex-direction: column; gap: 12px; }
+.mission-launch[hidden], .mission-run[hidden] { display: none; }
+.mission-launch textarea {
+  resize: none; background: rgba(0,0,0,0.3); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px; color: var(--text); font-size: 14px; line-height: 1.5; outline: none;
+}
+.mission-launch textarea:focus { border-color: var(--accent-line); }
+.mission-examples { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.mission-ex {
+  text-align: left; background: rgba(255,255,255,0.02); border: 1px solid var(--line);
+  color: var(--muted); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; line-height: 1.45;
+}
+.mission-ex:hover { border-color: var(--accent-line); color: var(--text); }
+
+.mission-goal-txt {
+  font-size: 14.5px; font-weight: 600; line-height: 1.45; padding: 12px 14px; margin-bottom: 14px;
+  background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 12px;
+}
+.mission-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.ms-step { display: flex; align-items: center; gap: 11px; font-size: 13.5px; opacity: 0.55; transition: opacity 0.2s; }
+.ms-step.active, .ms-step.done { opacity: 1; }
+.ms-dot {
+  flex: none; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  font-size: 11px; border: 1.5px solid var(--line-strong); color: var(--muted);
+}
+.ms-step.done .ms-dot { background: var(--accent); border-color: var(--accent); color: #04202a; font-weight: 700; }
+.ms-step.active .ms-dot { border-color: var(--accent); position: relative; }
+.ms-step.active .ms-dot::after {
+  content: ""; position: absolute; inset: -1.5px; border-radius: 50%;
+  border: 1.5px solid transparent; border-top-color: var(--accent); animation: spin 0.8s linear infinite;
+}
+.ms-step.done .ms-text { color: var(--muted); }
+
+.mission-log { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 14px; }
+.ml-row { display: flex; gap: 9px; font-size: 12.8px; line-height: 1.5; }
+.ml-ico { flex: none; color: var(--accent); }
+.ml-row.act .ml-text, .ml-row.search .ml-text { color: var(--muted); }
+.ml-row.report { padding: 10px 12px; background: rgba(67,230,160,0.08); border: 1px solid rgba(67,230,160,0.25); border-radius: 10px; }
+.ml-row.report .ml-ico { color: var(--good); }
+.ml-again { margin-top: 6px; }
+.chat-sub.warn { color: var(--warn); }
+.chat-sub.good { color: var(--good); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr 1fr; }

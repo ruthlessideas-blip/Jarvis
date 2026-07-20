@@ -10,6 +10,7 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 
 | Panel | What it does |
 |-------|--------------|
+| **Missions** 🎯 | Give JARVIS a goal and it works autonomously: it **plans the steps**, then carries each one out with its tools, showing a live checklist and activity log in a Mission Control panel, and ends with a report. Click **🎯 Mission** (or press `m`), or type `mission <goal>` in the command bar. Reversible dashboard actions run on their own; it drafts irreversible ones (like sending email) for your approval. |
 | **JARVIS AI** 🤖 | A real AI assistant powered by Claude that **hears you, speaks back, and acts**. Talk to it, and it can add tasks, set reminders, create events, start the focus timer, play sounds, pull weather, track crypto, open sites, change the theme, and remember things about you. Click 💬 (or press `j`), type in the command bar, or just say **"Hey JARVIS."** |
 | **Voice** 🎙️ | Click the mic to turn on hands-free mode — JARVIS listens for **"Hey JARVIS …"** and speaks its replies aloud (dry-butler voice by default). Tune the voice, personality, and how it addresses you in Settings. |
 | **Agency** ⚙️ | Ask in plain language — *"remind me to call mom at 3pm", "add a dentist appointment Friday", "start a focus session and play rain", "what's the weather?"* — and JARVIS does it, then confirms. |
@@ -107,6 +108,7 @@ On Windows, double-click `start.bat`, or run `python -m http.server 4173`.
 | `t` | Jump to add-task |
 | `f` | Start / pause focus timer |
 | `j` | Open JARVIS AI chat |
+| `m` | Open Mission Control |
 | `Esc` | Close any overlay |
 
 ## Privacy

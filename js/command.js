@@ -8,6 +8,7 @@
   function commands() {
     return [
       { icon: "🤖", label: "Ask JARVIS (AI chat)", hint: "j", run: () => { closePalette(); J.openChat(); } },
+      { icon: "🎯", label: "Launch a mission", hint: "m", run: () => { closePalette(); J.openMission(); } },
       { icon: "✅", label: "Add task…", hint: "t", run: () => quickPrompt("New task:", v => J.addTask(v) && J.toast("Task added")) },
       { icon: "📅", label: "Add calendar event…", run: () => { closePalette(); document.querySelector('#calGrid .cal-cell.today')?.click(); } },
       { icon: "📈", label: "Add crypto ticker…", run: () => { closePalette(); J.addCoin(); } },
@@ -49,6 +50,10 @@
     if (/^(start |begin )?(focus|pomodoro|timer)$/.test(low)) { J.focusToggle(); return; }
     if (/^(weather|forecast)$/.test(low)) { J.loadWeather(); J.toast("Refreshing weather…"); return; }
     if (/^(settings|preferences|config)$/.test(low)) { J.openSettings(); return; }
+
+    // "mission: X" / "run mission X"
+    m = low.match(/^(?:run |launch |start )?mission[:,]?\s+(.*)/);
+    if (m && m[1]) { J.startMission(m[1]); return; }
 
     // "ask jarvis X" / "jarvis X" / "hey jarvis X"
     m = low.match(/^(?:hey )?jarvis[,:]?\s*(.*)/) || (/^ask jarvis\s+(.*)/.exec(low));
@@ -144,12 +149,13 @@
     document.addEventListener("keydown", (e) => {
       const typing = /^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName);
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openPalette(); return; }
-      if (e.key === "Escape") { closePalette(); J.closeSettings && J.closeSettings(); J.closeChat && J.closeChat(); }
+      if (e.key === "Escape") { closePalette(); J.closeSettings && J.closeSettings(); J.closeChat && J.closeChat(); J.closeMission && J.closeMission(); }
       if (typing) return;
       if (e.key === "/") { e.preventDefault(); omni.focus(); }
       if (e.key === "t") { e.preventDefault(); document.getElementById("taskInput").focus(); }
       if (e.key === "f") { e.preventDefault(); J.focusToggle(); }
       if (e.key === "j") { e.preventDefault(); J.openChat(); }
+      if (e.key === "m") { e.preventDefault(); J.openMission(); }
     });
 
     J.openPalette = openPalette;
