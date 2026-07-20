@@ -49,7 +49,7 @@ The AI chat needs an Anthropic API key (it talks to Claude directly from your br
 
 The key is stored only in this browser's local storage and is sent only to Anthropic's API. The assistant runs on Claude Opus 4.8 with tool use, so it can operate the dashboard for you — not just chat.
 
-> **For full voice + microphone**, run over a local server (`./start.sh`) and open `http://localhost:4173` in **Chrome or Edge**, then allow mic access when prompted. Speaking works from a plain file open too; the "Hey JARVIS" wake word needs localhost/https.
+> **For full voice + microphone**, launch with the **one-click desktop app** (see *Run it* below) — it serves JARVIS over localhost automatically so the mic and "Hey JARVIS" wake word work. Then allow mic access when prompted.
 
 ## Connecting Google (Calendar + Gmail)
 
@@ -70,34 +70,43 @@ your access token never leaves your machine.
 
 Now the Inbox and your calendar events populate, and JARVIS can create events and
 send email on your behalf. Because it's the browser token flow, Google may ask you
-to re-approve occasionally (about hourly) — one click. Requires running over
-**localhost/https** (the `start.sh` server), not a plain file open.
+to re-approve occasionally (about hourly) — one click. Requires running via the
+**one-click desktop launcher** (which serves over `http://localhost:4173`), not a
+plain file open — and that's the origin you register in step 4.
 
 > Scopes requested: Calendar events (read/write), Gmail read, Gmail send. You can
 > disconnect and revoke access any time from Settings.
 
 ## Run it
 
-### Easiest — just open it
-Double-click **`index.html`**. It works straight from the file system.
+### ⭐ One-click desktop app (recommended)
 
-> Two features need a local web server (browser security rules): **voice input**
-> and **auto-location weather**. Setting a city in Settings makes weather work
-> even from a plain file open.
+Just **double-click the launcher for your system** — it starts JARVIS and opens it
+in its own dedicated app window (no browser tabs, no typing `localhost`):
 
-### Recommended — run a tiny local server (unlocks everything)
+| Your computer | Double-click |
+|---------------|--------------|
+| **macOS**   | **`Jarvis.command`** |
+| **Windows** | **`Jarvis.bat`** |
+| **Linux**   | **`jarvis-linux.sh`** |
 
-```bash
-cd Jarvis
-./start.sh          # macOS / Linux
-```
-or manually:
-```bash
-python3 -m http.server 4173
-```
-Then open **http://localhost:4173** in Chrome or Edge.
+That's it. The launcher quietly runs a tiny local engine in the background (using
+Node or Python, whichever you already have) and opens JARVIS in a clean, full-screen
+app window via Chrome/Edge — which gives it everything: **voice, microphone, camera,
+and auto-location weather** all work, because it's served securely over localhost for
+you. A small helper window stays open; keep it open while you use JARVIS, and close it
+to shut down.
 
-On Windows, double-click `start.bat`, or run `python -m http.server 4173`.
+> **macOS first time:** if double-clicking shows a security warning, right-click
+> `Jarvis.command` → **Open** → **Open**. (Or run `chmod +x Jarvis.command` once.)
+> No Node/Python and no Chrome/Edge? It still opens in your default browser with a
+> slightly reduced feature set.
+
+### Alternative — just open the file
+Double-click **`index.html`** to run it straight from disk. Everything works except a
+couple of browser-security-gated features (**wake-word voice input**, **camera/screen
+vision**, **auto-location**) — those need the localhost launcher above. Setting a city
+in Settings makes weather work from a plain file open.
 
 ## Keyboard shortcuts
 
