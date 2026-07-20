@@ -16,7 +16,8 @@
       { icon: "🎯", label: "Start focus timer", hint: "f", run: () => { closePalette(); J.focusToggle(); } },
       { icon: "🌦️", label: "Refresh weather", run: () => J.loadWeather() },
       { icon: "⚙️", label: "Open settings", run: () => J.openSettings() },
-      { icon: "🎙️", label: "Voice command", run: () => { closePalette(); J.startVoice(); } },
+      { icon: "🎙️", label: "Toggle voice mode (Hey JARVIS)", run: () => { closePalette(); J.toggleVoiceMode && J.toggleVoiceMode(); } },
+      { icon: "☀️", label: "Morning brief", run: () => { closePalette(); J.morningBrief && J.morningBrief(); } },
       { icon: "🔍", label: "Search Google", run: () => quickPrompt("Search Google:", q => open("https://google.com/search?q=" + encodeURIComponent(q), "_blank")) },
       { icon: "📺", label: "Search YouTube", run: () => quickPrompt("Search YouTube:", q => open("https://youtube.com/results?search_query=" + encodeURIComponent(q), "_blank")) },
       { icon: "🌗", label: "Toggle 24-hour clock", run: () => { const s = J.state(); s.clock24 = !s.clock24; J.save(); J.repaintClocks && J.repaintClocks(); J.toast("Clock: " + (s.clock24 ? "24h" : "12h")); } },
@@ -129,8 +130,6 @@
     omni.addEventListener("keydown", (e) => {
       if (e.key === "Enter") { handleOmni(omni.value); omni.value = ""; }
     });
-
-    document.getElementById("micBtn").addEventListener("click", J.startVoice);
 
     const pInput = document.getElementById("paletteInput");
     pInput.addEventListener("input", () => renderPalette(pInput.value));

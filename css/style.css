@@ -474,6 +474,47 @@ kbd {
 .chat-input-row textarea:focus { border-color: var(--accent-line); }
 .chat-input-row .pill.primary { padding: 11px 18px; }
 
+/* ---------- Hero action buttons ---------- */
+.hero-actions { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.hero-actions .pill { font-size: 13px; }
+#briefBtn { border-color: var(--accent-line); color: var(--accent); }
+#briefBtn:hover { background: var(--accent-soft); }
+
+/* ---------- Reminders ---------- */
+.reminder-list { display: flex; flex-direction: column; gap: 6px; }
+.rm-row { display: flex; align-items: center; gap: 10px; font-size: 12.5px; padding: 2px 0; }
+.rm-when { color: var(--accent); flex: none; width: 108px; font-size: 11px; font-variant-numeric: tabular-nums; }
+.rm-text { flex: 1; }
+
+/* ---------- Chat tool-action lines ---------- */
+.msg.tool {
+  align-self: center; max-width: 96%; font-size: 12px; color: var(--muted);
+  background: rgba(56,232,255,0.06); border: 1px solid var(--line);
+  padding: 6px 12px; border-radius: 999px; text-align: center;
+}
+
+/* ---------- Voice status pill ---------- */
+.voice-status {
+  position: fixed; left: 24px; bottom: 24px; z-index: 70;
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+  background: var(--panel-solid); border: 1px solid var(--accent-line);
+  border-radius: 999px; box-shadow: var(--shadow); font-size: 13px;
+}
+.voice-status[hidden] { display: none; }
+.vs-orb { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.voice-status.listening .vs-orb { animation: pulse 1.4s ease-in-out infinite; }
+.voice-status.speaking .vs-orb { animation: pulse 0.5s ease-in-out infinite; background: var(--good); box-shadow: 0 0 12px var(--good); }
+.voice-status.hit { border-color: var(--accent); box-shadow: 0 0 24px var(--accent-soft); }
+
+/* ---------- Settings selects ---------- */
+.field select {
+  background: rgba(0,0,0,0.25); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; color: var(--text); font-size: 14px; outline: none;
+}
+.field select:focus { border-color: var(--accent-line); }
+.field.two-col { flex-direction: row; gap: 12px; }
+.field.two-col > .field { flex: 1; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr 1fr; }

@@ -50,6 +50,8 @@
     const body = document.getElementById("weatherBody");
     const cur = data.current;
     const [d, emoji] = desc(cur.weather_code);
+    // stash a plain-language snapshot for the AI agent / brief
+    J.lastWeather = `${label}: ${Math.round(cur.temperature_2m)}°F, ${d}, feels ${Math.round(cur.apparent_temperature)}°, humidity ${cur.relative_humidity_2m}%, wind ${Math.round(cur.wind_speed_10m)} mph. Today ${Math.round(data.daily.temperature_2m_max[0])}°/${Math.round(data.daily.temperature_2m_min[0])}°.`;
     body.innerHTML = "";
     body.append(
       J.el("div", { class: "weather-ico", text: emoji }),

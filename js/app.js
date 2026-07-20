@@ -51,8 +51,13 @@
       J.initCalendar();
       J.initMarkets();
       J.initChat();
+      J.initVoice();
+      J.initBrief();
       J.initCommand();
       J.initSettings();
+
+      const ask = document.getElementById("askBtn");
+      if (ask) ask.addEventListener("click", () => J.openChat());
 
       // First-run welcome
       if (!J.state().name) {

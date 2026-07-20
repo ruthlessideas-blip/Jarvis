@@ -92,4 +92,8 @@
     draw(); updateMeta();
   };
 
+  // programmatic controls (used by the AI agent)
+  J.startFocus = function (m) { if (m && DUR[m]) setMode(m); if (!running) start(); };
+  J.setFocusMode = setMode;
+
 })(window.J);

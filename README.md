@@ -10,7 +10,12 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 
 | Panel | What it does |
 |-------|--------------|
-| **JARVIS AI** 🤖 | A real AI assistant powered by Claude. Click the 💬 button (or press `j`) to chat — it has context on your tasks and can plan, draft, explain, and brainstorm. Type a question in the command bar and it answers there too. |
+| **JARVIS AI** 🤖 | A real AI assistant powered by Claude that **hears you, speaks back, and acts**. Talk to it, and it can add tasks, set reminders, create events, start the focus timer, play sounds, pull weather, track crypto, open sites, change the theme, and remember things about you. Click 💬 (or press `j`), type in the command bar, or just say **"Hey JARVIS."** |
+| **Voice** 🎙️ | Click the mic to turn on hands-free mode — JARVIS listens for **"Hey JARVIS …"** and speaks its replies aloud (dry-butler voice by default). Tune the voice, personality, and how it addresses you in Settings. |
+| **Agency** ⚙️ | Ask in plain language — *"remind me to call mom at 3pm", "add a dentist appointment Friday", "start a focus session and play rain", "what's the weather?"* — and JARVIS does it, then confirms. |
+| **Memory** 🧠 | Tell it things (*"remember I prefer morning workouts"*) and it keeps a durable, local memory it draws on in future chats. |
+| **Morning brief** ☀️ | Tap **Brief me** and JARVIS reads you a spoken rundown: greeting, date, weather, your tasks, today's events, and reminders. Offers itself once a day. |
+| **Reminders** ⏰ | Ask JARVIS to set one; it fires a desktop notification, a spoken alert, and an on-screen toast when due. |
 | **Command bar** | Type anything: `add task call mom`, `weather`, `search rocket league`, a URL, `jarvis plan my day`, or a plain question. Press `/` to jump to it. |
 | **Command palette** | Press `⌘K` / `Ctrl+K` for a searchable list of every action. |
 | **Voice** | Click the 🎙️ mic (or palette → Voice) and speak a command. |
@@ -35,7 +40,9 @@ The AI chat needs an Anthropic API key (it talks to Claude directly from your br
 2. Open **⚙ Settings → JARVIS AI** and paste it in.
 3. Click 💬 (or press `j`, or just ask a question in the command bar).
 
-The key is stored only in this browser's local storage and is sent only to Anthropic's API. The assistant runs on Claude Opus 4.8 and streams replies live.
+The key is stored only in this browser's local storage and is sent only to Anthropic's API. The assistant runs on Claude Opus 4.8 with tool use, so it can operate the dashboard for you — not just chat.
+
+> **For full voice + microphone**, run over a local server (`./start.sh`) and open `http://localhost:4173` in **Chrome or Edge**, then allow mic access when prompted. Speaking works from a plain file open too; the "Hey JARVIS" wake word needs localhost/https.
 
 ## Run it
 

@@ -65,6 +65,10 @@
       <h1 id="greeting" class="greeting">Good day.</h1>
       <p id="subGreeting" class="sub-greeting">Systems nominal. What can I do for you?</p>
       <div class="hero-chips" id="heroChips"></div>
+      <div class="hero-actions">
+        <button class="pill" id="briefBtn">☀ Brief me</button>
+        <button class="pill" id="askBtn">💬 Talk to JARVIS</button>
+      </div>
     </div>
     <div class="hero-right">
       <div class="reactor big" id="reactorBig"><span></span><span></span><span></span><b id="reactorTime">--:--</b></div>
@@ -187,6 +191,15 @@
         <div class="market-list" id="marketList"><div class="muted tiny">Loading markets…</div></div>
       </article>
 
+      <!-- Reminders -->
+      <article class="card" id="reminderCard">
+        <div class="card-head">
+          <h2>Reminders</h2>
+          <span class="muted tiny">ask JARVIS to set one</span>
+        </div>
+        <div class="reminder-list" id="reminderList"></div>
+      </article>
+
       <!-- Notes -->
       <article class="card notes-card" id="notesCard">
         <div class="card-head">
@@ -282,6 +295,27 @@
           <input id="setKey" type="password" placeholder="sk-ant-…  (stored only on this computer)" />
           <span class="muted tiny">Powers the AI chat. Get one at console.anthropic.com. Sent only to Anthropic, direct from your browser.</span>
         </label>
+        <label class="field switch-field">
+          <span>JARVIS speaks replies aloud</span>
+          <input type="checkbox" id="setVoice" />
+        </label>
+        <label class="field">
+          <span>Voice</span>
+          <select id="setVoiceSel"></select>
+        </label>
+        <div class="field two-col">
+          <label class="field" style="gap:7px">
+            <span>Personality</span>
+            <select id="setPersona">
+              <option value="jarvis">JARVIS — witty butler</option>
+              <option value="plain">Plain &amp; direct</option>
+            </select>
+          </label>
+          <label class="field" style="gap:7px">
+            <span>Address you as</span>
+            <input id="setAddress" placeholder="sir" />
+          </label>
+        </div>
         <div class="field">
           <span>Data</span>
           <div class="btn-row">
@@ -297,6 +331,9 @@
 
   <input type="file" id="importFile" accept="application/json" hidden />
   <div id="toast" class="toast" hidden></div>
+  <div id="voiceStatus" class="voice-status" hidden>
+    <span class="vs-orb"></span><span class="vs-text"></span>
+  </div>
 
   <script src="js/store.js"></script>
   <script src="js/clock.js"></script>
@@ -311,7 +348,10 @@
   <script src="js/worldclocks.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/markets.js"></script>
+  <script src="js/agent.js"></script>
   <script src="js/chat.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/brief.js"></script>
   <script src="js/command.js"></script>
   <script src="js/settings.js"></script>
   <script src="js/app.js"></script>

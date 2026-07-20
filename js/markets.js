@@ -52,6 +52,15 @@
     if (!s.coins.includes(key)) { s.coins.push(key); J.save(); load(); }
   };
 
+  // programmatic add (used by the AI agent)
+  J.addCoinId = function (id) {
+    const key = (id || "").trim().toLowerCase();
+    if (!key) return false;
+    const s = J.state();
+    if (!s.coins.includes(key)) { s.coins.push(key); J.save(); load(); }
+    return true;
+  };
+
   J.initMarkets = function () {
     document.getElementById("addCoin").addEventListener("click", J.addCoin);
     document.getElementById("refreshMarket").addEventListener("click", load);

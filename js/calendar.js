@@ -85,6 +85,16 @@
     document.getElementById("calNext").addEventListener("click", () => { view.setMonth(view.getMonth() + 1); render(); });
     document.getElementById("calToday").addEventListener("click", () => { view = new Date(); render(); });
     render();
+    J.renderCalendar = render;
+  };
+
+  // programmatic add (used by the AI agent)
+  J.addEvent = function (key, text) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) return false;
+    const s = J.state();
+    (s.events[key] = s.events[key] || []).push({ id: J.uid(), text: text });
+    J.save(); render();
+    return true;
   };
 
 })(window.J);

@@ -121,6 +121,16 @@
         onclick: () => play(s.id) })));
   }
 
+  // programmatic controls (used by the AI agent + voice)
+  J.playSound = function (id) {
+    const ok = SOUNDS.some(s => s.id === id);
+    if (!ok) return false;
+    if (currentName !== id) play(id);
+    return true;
+  };
+  J.stopSounds = stop;
+  J.soundIds = () => SOUNDS.map(s => s.id);
+
   J.initSounds = function () {
     render();
     const vol = document.getElementById("soundVol");

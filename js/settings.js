@@ -14,9 +14,26 @@
     document.getElementById("setCity").value = s.city || "";
     document.getElementById("setKey").value = s.apiKey || "";
     document.getElementById("set24h").checked = !!s.clock24;
+    document.getElementById("setVoice").checked = !!s.voice;
+    document.getElementById("setPersona").value = s.persona || "jarvis";
+    document.getElementById("setAddress").value = s.address || "sir";
+    populateVoices();
     renderAccents();
     overlay().hidden = false;
   };
+
+  function populateVoices() {
+    const sel = document.getElementById("setVoiceSel");
+    if (!sel || !J.getVoices) return;
+    const voices = J.getVoices();
+    const cur = J.state().voiceName;
+    sel.innerHTML = '<option value="">Auto (best available)</option>';
+    voices.forEach(v => {
+      const o = J.el("option", { value: v.name, text: `${v.name} (${v.lang})` });
+      if (v.name === cur) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
   J.closeSettings = function () { const o = overlay(); if (o) o.hidden = true; };
 
   function renderAccents() {
@@ -59,6 +76,18 @@
       J.state().clock24 = c24.checked; J.save();
       J.repaintClocks && J.repaintClocks();
     });
+
+    const voice = document.getElementById("setVoice");
+    voice.addEventListener("change", () => { J.state().voice = voice.checked; J.save(); });
+    const vsel = document.getElementById("setVoiceSel");
+    vsel.addEventListener("change", () => {
+      J.state().voiceName = vsel.value; J.save();
+      if (J.state().voice) J.speak && J.speak("Voice set.");
+    });
+    const persona = document.getElementById("setPersona");
+    persona.addEventListener("change", () => { J.state().persona = persona.value; J.save(); });
+    const address = document.getElementById("setAddress");
+    address.addEventListener("input", () => { J.state().address = address.value.trim() || "sir"; J.save(); });
 
     document.getElementById("exportData").addEventListener("click", J.exportData);
     document.getElementById("importData").addEventListener("click", () => document.getElementById("importFile").click());

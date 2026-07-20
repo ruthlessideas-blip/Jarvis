@@ -30,7 +30,15 @@ window.J = window.J || {};
     events: {},                 // { "YYYY-MM-DD": [ {id, text} ] }
     coins: ["bitcoin", "ethereum", "solana"],
     apiKey: "",                 // Anthropic API key (stored locally only)
-    chat: []                    // [{ role, content }]
+    chat: [],                   // [{ role, content }]
+    memory: [],                 // long-term facts JARVIS remembers ["..."]
+    reminders: [],              // [{ id, text, at }]  at = epoch ms
+    voice: true,                // JARVIS speaks replies
+    wake: false,                // always-listening wake word
+    voiceName: "",              // preferred TTS voice
+    persona: "jarvis",          // "jarvis" (witty butler) | "plain"
+    address: "sir",             // how JARVIS addresses you
+    briefDay: ""                // last date the morning brief ran
   };
 
   let state = load();
