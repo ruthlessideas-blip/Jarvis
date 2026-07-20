@@ -290,6 +290,7 @@
         <button class="icon-btn" id="chatClose" aria-label="Close">✕</button>
       </div>
     </div>
+    <div class="model-switch" id="modelSwitch" title="Choose the brain"></div>
     <div class="chat-msgs" id="chatMsgs"></div>
     <div class="chat-compose">
       <div class="chat-pending" id="chatPending" hidden></div>
@@ -384,7 +385,12 @@
         <label class="field">
           <span>JARVIS AI — Anthropic API key</span>
           <input id="setKey" type="password" placeholder="sk-ant-…  (stored only on this computer)" />
-          <span class="muted tiny">Powers the AI chat. Get one at console.anthropic.com. Sent only to Anthropic, direct from your browser.</span>
+          <span class="muted tiny">Only needed for the Haiku / Turbo brains. Switch the brain to <b>Ollama</b> (in the chat) to run free &amp; local with no key. Get a key at console.anthropic.com.</span>
+        </label>
+        <label class="field">
+          <span>Local model (Ollama)</span>
+          <input id="setOllama" placeholder="llama3.1" />
+          <span class="muted tiny">The model name Ollama runs for the free/local brain (e.g. llama3.1, qwen2.5, mistral).</span>
         </label>
         <label class="field switch-field">
           <span>JARVIS speaks replies aloud</span>
@@ -447,6 +453,7 @@
   <script src="js/google.js"></script>
   <script src="js/empire.js"></script>
   <script src="js/patricia.js"></script>
+  <script src="js/llm.js"></script>
   <script src="js/agent.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/vision.js"></script>

@@ -41,6 +41,22 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 | **Briefing** | Top tech stories (Hacker News). |
 | **Settings ⚙** | Name, city, accent color, 24h clock, your AI key, backup export/import, reset. |
 
+## Choosing a brain (and running free)
+
+The chat has a **brain switch** at the top with three options:
+
+| Brain | Cost | Needs | Best for |
+|-------|------|-------|----------|
+| **Ollama** | **free · local** | [Ollama](https://ollama.ai) running locally | Everyday chat, planning — $0, private |
+| **Haiku** | pennies | Anthropic API key | Cheap, fast, reliable (default) |
+| **Turbo** (Sonnet) | more | Anthropic API key | Heavy missions, vision, deep work |
+
+Switch anytime — it applies to chat *and* missions. Default is **Haiku** (fractions of a cent per message). Flip to **Ollama** to run completely free and offline with no key.
+
+> **To use Ollama:** install it from [ollama.ai](https://ollama.ai), pull a model (`ollama pull llama3.1`), and start it with browser access allowed: set the environment variable **`OLLAMA_ORIGINS=*`** before running Ollama (so the dashboard on localhost can reach it). Then pick **Ollama** in the switch. Set which local model to use in ⚙ Settings. Note: vision (images) and live web search need a Claude brain (Haiku/Turbo); local models handle chat + actions.
+
+> **For building** (not chatting): use the **Claude Code** desktop app on your Claude subscription — it's flat-rate, not per-token. That's the cheapest way to keep extending JARVIS.
+
 ## Turning on JARVIS AI
 
 The AI chat needs an Anthropic API key (it talks to Claude directly from your browser — nothing goes through any server of mine).

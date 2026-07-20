@@ -452,6 +452,15 @@ kbd {
 .chat-title { display: flex; align-items: center; gap: 12px; }
 .chat-name { font-weight: 700; letter-spacing: 2px; font-size: 14px; }
 .chat-actions { display: flex; align-items: center; gap: 8px; }
+.model-switch { display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.ms-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--line); color: var(--muted);
+  border-radius: 9px; padding: 7px 6px; font-size: 12px; transition: all 0.15s;
+}
+.ms-btn:hover { border-color: var(--accent-line); color: var(--text); }
+.ms-btn.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.ms-badge { font-size: 9px; opacity: 0.8; }
 .chat-msgs { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 16px; }
 .chat-empty { color: var(--muted); font-size: 13.5px; line-height: 1.6; margin: auto 0; text-align: center; padding: 0 10px; }
 .chat-empty b { color: var(--accent); }

@@ -13,6 +13,7 @@
     document.getElementById("setName").value = s.name || "";
     document.getElementById("setCity").value = s.city || "";
     document.getElementById("setKey").value = s.apiKey || "";
+    document.getElementById("setOllama").value = s.ollamaModel || "llama3.1";
     document.getElementById("set24h").checked = !!s.clock24;
     document.getElementById("setVoice").checked = !!s.voice;
     document.getElementById("setProactive").checked = !!s.proactive;
@@ -72,6 +73,8 @@
 
     const key = document.getElementById("setKey");
     key.addEventListener("input", () => { J.state().apiKey = key.value.trim(); J.save(); });
+    const ollama = document.getElementById("setOllama");
+    ollama.addEventListener("input", () => { J.state().ollamaModel = ollama.value.trim() || "llama3.1"; J.save(); });
 
     const c24 = document.getElementById("set24h");
     c24.addEventListener("change", () => {

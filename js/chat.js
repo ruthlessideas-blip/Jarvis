@@ -1,12 +1,10 @@
 /* ============================================================
-   chat.js — JARVIS AI brain: agentic loop (custom + web tools),
-   vision input, and voice output.
+   chat.js — JARVIS AI: provider-agnostic agentic loop
+   (Ollama / Haiku / Sonnet), vision, voice out, model switch.
    ============================================================ */
 (function (J) {
   "use strict";
 
-  const API = "https://api.anthropic.com/v1/messages";
-  const MODEL = "claude-opus-4-8";
   const MAX_STEPS = 10;
   let busy = false;
 
@@ -24,7 +22,7 @@
     if (!box) return;
     const s = J.state();
     if (!s.chat.length) {
-      box.innerHTML = '<div class="chat-empty">At your service. Ask me to plan your day, set a reminder, search the web, look at a screenshot, start a focus session — or just talk. Say “Hey JARVIS” if voice is on.</div>';
+      box.innerHTML = '<div class="chat-empty">At your service. Ask me to plan your day, draft Boston DMs in your voice, set a reminder, search the web, or look at a screenshot. Say “Hey JARVIS” if voice is on.</div>';
       return;
     }
     box.replaceChildren(...s.chat.map(m => bubble(m.role, m.content)));
@@ -33,38 +31,23 @@
 
   J.openChat = function () {
     document.getElementById("chatPanel").classList.add("open");
-    renderHistory();
+    renderHistory(); renderModelSwitch();
     setTimeout(() => document.getElementById("chatInput").focus(), 60);
   };
   J.closeChat = function () { document.getElementById("chatPanel").classList.remove("open"); };
 
-  async function callAPI(messages) {
-    const s = J.state();
-    const res = await fetch(API, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": s.apiKey,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true"
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 3072,
-        system: J.buildSystemPrompt(),
-        tools: J.tools.concat(J.serverTools || []),
-        messages
-      })
-    });
-    if (!res.ok) {
-      let msg = "Request failed (" + res.status + ").";
-      try { const j = await res.json(); if (j.error && j.error.message) msg = j.error.message; } catch (e) {}
-      throw new Error(msg);
-    }
-    return res.json();
+  // ---------- Model switch ----------
+  function renderModelSwitch() {
+    const wrap = document.getElementById("modelSwitch");
+    if (!wrap) return;
+    const cur = J.state().model;
+    wrap.replaceChildren(...Object.values(J.MODELS).map(m =>
+      J.el("button", { class: "ms-btn" + (m.id === cur ? " active" : ""), title: m.label + " — " + m.sub,
+        html: `${m.label} <span class="ms-badge">${m.badge}</span>`,
+        onclick: () => { J.setModel(m.id); renderModelSwitch(); J.toast("Brain: " + m.label + (m.kind === "ollama" ? " (free, local)" : "")); } })));
   }
 
-  // opts.image = { media_type, data (base64, no prefix), url (for preview) }
+  // ---------- Agentic loop ----------
   J.askJarvis = async function (text, opts) {
     opts = opts || {};
     text = (text || "").trim();
@@ -72,10 +55,11 @@
     if (!text || busy) return;
 
     const s = J.state();
-    if (!s.apiKey) {
+    const model = J.currentModel();
+    if (model.kind === "anthropic" && !s.apiKey) {
       J.openChat();
       document.getElementById("chatMsgs").innerHTML =
-        '<div class="chat-empty">To bring me online, add your Anthropic API key in ⚙ <b>Settings → JARVIS AI</b>. It stays on this computer and talks to Claude directly from your browser.</div>';
+        '<div class="chat-empty">Haiku/Turbo need an Anthropic key (⚙ <b>Settings → JARVIS AI</b>) — or switch the brain to <b>Ollama</b> above to run free & local with no key.</div>';
       return;
     }
     J.openChat();
@@ -84,62 +68,54 @@
     box.appendChild(bubble("user", text, opts.image && opts.image.url));
     const thinking = bubble("assistant", "");
     const setTyping = () => { thinking.querySelector(".msg-body").innerHTML = '<span class="typing"><i></i><i></i><i></i></span>'; };
-    setTyping();
-    box.appendChild(thinking);
-    scroll();
+    setTyping(); box.appendChild(thinking); scroll();
 
-    // working message list seeded from stored (text) history
+    if (opts.image && !J.modelSupportsVision()) {
+      box.insertBefore(toolLine("🖼 Vision needs Haiku or Turbo — switch the brain to see images."), thinking);
+    }
+
+    // normalized history from stored text turns + this turn
     const messages = s.chat.map(m => ({ role: m.role, content: m.content }));
-    const firstContent = opts.image
-      ? [{ type: "image", source: { type: "base64", media_type: opts.image.media_type, data: opts.image.data } },
-         { type: "text", text }]
-      : text;
-    messages.push({ role: "user", content: firstContent });
+    messages.push({ role: "user", content: text, image: opts.image });
 
     busy = true; setSending(true);
     let finalText = "";
     try {
       for (let step = 0; step < MAX_STEPS; step++) {
-        const resp = await callAPI(messages);
-        messages.push({ role: "assistant", content: resp.content });
-
-        const says = resp.content.filter(b => b.type === "text").map(b => b.text).join(" ").trim();
-        const toolUses = resp.content.filter(b => b.type === "tool_use");
-
-        // surface web activity
-        resp.content.forEach(b => {
-          if (b.type === "server_tool_use") {
-            const q = b.input && (b.input.query || b.input.url);
-            box.insertBefore(toolLine((b.name === "web_fetch" ? "🌐 Reading " : "🔎 Searching the web: ") + (q || "")), thinking);
-          }
+        const res = await J.llmStep(J.buildSystemPrompt(), messages, {
+          tools: J.tools,
+          onServer: (b) => { const q = b.input && (b.input.query || b.input.url); box.insertBefore(toolLine((b.name === "web_fetch" ? "🌐 Reading " : "🔎 Searching the web: ") + (q || "")), thinking); scroll(); }
         });
-        if (says) thinking.querySelector(".msg-body").textContent = says;
+        if (res.error) { thinking.querySelector(".msg-body").textContent = "⚠️ " + res.error; break; }
 
-        if (resp.stop_reason === "tool_use" && toolUses.length) {
+        messages.push({ role: "assistant", content: res.text, toolUses: res.toolUses });
+        if (res.text) thinking.querySelector(".msg-body").textContent = res.text;
+
+        if (res.toolUses && res.toolUses.length) {
           const results = [];
-          for (const tu of toolUses) {
+          for (const tu of res.toolUses) {
             const out = await J.runTool(tu.name, tu.input);
             box.insertBefore(toolLine("⚙ " + out), thinking);
-            results.push({ type: "tool_result", tool_use_id: tu.id, content: out });
+            results.push({ id: tu.id, name: tu.name, content: out });
           }
-          messages.push({ role: "user", content: results });
+          messages.push({ role: "tool", results });
           J.emit("state:changed"); scroll();
-          if (!says) setTyping();
+          if (!res.text) setTyping();
           continue;
         }
-        if (resp.stop_reason === "pause_turn") { scroll(); if (!says) setTyping(); continue; }
-
-        finalText = says || "(done)";
+        finalText = res.text || "(done)";
         break;
       }
-      thinking.querySelector(".msg-body").textContent = finalText || "(done)";
-      s.chat.push({ role: "user", content: (opts.image ? "🖼️ " : "") + text });
-      s.chat.push({ role: "assistant", content: finalText || "(done)" });
-      if (s.chat.length > 40) s.chat = s.chat.slice(-40);
-      J.save();
-      if (!opts.silent) J.speak && J.speak(finalText);
+      if (finalText) {
+        thinking.querySelector(".msg-body").textContent = finalText;
+        s.chat.push({ role: "user", content: (opts.image ? "🖼️ " : "") + text });
+        s.chat.push({ role: "assistant", content: finalText });
+        if (s.chat.length > 40) s.chat = s.chat.slice(-40);
+        J.save();
+        if (!opts.silent) J.speak && J.speak(finalText);
+      }
     } catch (e) {
-      thinking.querySelector(".msg-body").textContent = "⚠️ " + (e.message || "Network error.");
+      thinking.querySelector(".msg-body").textContent = "⚠️ " + (e.message || "Error.");
     } finally {
       busy = false; setSending(false);
     }
@@ -165,6 +141,7 @@
       J.askJarvis(v, img ? { image: img } : undefined);
     });
     input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); } });
+    renderModelSwitch();
   };
 
 })(window.J);

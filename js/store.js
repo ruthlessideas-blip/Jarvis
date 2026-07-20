@@ -41,7 +41,9 @@ window.J = window.J || {};
     briefDay: "",               // last date the morning brief ran
     googleClientId: "",         // Google OAuth Web client id (not secret)
     googleConnected: false,     // hint to auto-reconnect silently on load
-    proactive: true             // JARVIS volunteers spoken updates (events, focus)
+    proactive: true,            // JARVIS volunteers spoken updates (events, focus)
+    model: "haiku",             // brain: "ollama" (free) | "haiku" (cheap) | "sonnet" (turbo)
+    ollamaModel: "llama3.1"     // which local model Ollama runs
   };
 
   let state = load();
