@@ -15,6 +15,7 @@
     document.getElementById("setKey").value = s.apiKey || "";
     document.getElementById("set24h").checked = !!s.clock24;
     document.getElementById("setVoice").checked = !!s.voice;
+    document.getElementById("setProactive").checked = !!s.proactive;
     document.getElementById("setPersona").value = s.persona || "jarvis";
     document.getElementById("setAddress").value = s.address || "sir";
     document.getElementById("setGoogleId").value = s.googleClientId || "";
@@ -80,6 +81,8 @@
 
     const voice = document.getElementById("setVoice");
     voice.addEventListener("change", () => { J.state().voice = voice.checked; J.save(); });
+    const proactive = document.getElementById("setProactive");
+    proactive.addEventListener("change", () => { J.state().proactive = proactive.checked; J.save(); });
     const vsel = document.getElementById("setVoiceSel");
     vsel.addEventListener("change", () => {
       J.state().voiceName = vsel.value; J.save();

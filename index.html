@@ -71,6 +71,7 @@
       </div>
     </div>
     <div class="hero-right">
+      <canvas id="hudCanvas" class="hud-canvas" aria-hidden="true"></canvas>
       <div class="reactor big" id="reactorBig"><span></span><span></span><span></span><b id="reactorTime">--:--</b></div>
     </div>
   </section>
@@ -329,6 +330,10 @@
           <span>JARVIS speaks replies aloud</span>
           <input type="checkbox" id="setVoice" />
         </label>
+        <label class="field switch-field">
+          <span>Proactive updates (events, focus, reminders)</span>
+          <input type="checkbox" id="setProactive" />
+        </label>
         <label class="field">
           <span>Voice</span>
           <select id="setVoiceSel"></select>
@@ -366,6 +371,7 @@
   </div>
 
   <script src="js/store.js"></script>
+  <script src="js/hud.js"></script>
   <script src="js/clock.js"></script>
   <script src="js/tasks.js"></script>
   <script src="js/habits.js"></script>

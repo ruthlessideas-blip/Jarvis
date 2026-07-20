@@ -40,7 +40,8 @@ window.J = window.J || {};
     address: "sir",             // how JARVIS addresses you
     briefDay: "",               // last date the morning brief ran
     googleClientId: "",         // Google OAuth Web client id (not secret)
-    googleConnected: false      // hint to auto-reconnect silently on load
+    googleConnected: false,     // hint to auto-reconnect silently on load
+    proactive: true             // JARVIS volunteers spoken updates (events, focus)
   };
 
   let state = load();

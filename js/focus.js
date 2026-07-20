@@ -49,6 +49,11 @@
       J.toast("Break over — back to it.");
     }
     beep();
+    if (J.state().proactive && J.speak) {
+      J.speak(mode === "focus"
+        ? "Focus session complete. Nicely done — take a short break."
+        : "Break's over. Back to it.");
+    }
     remaining = DUR[mode];
     setTimeout(draw, 900);
   }

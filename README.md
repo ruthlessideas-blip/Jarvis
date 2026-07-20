@@ -18,6 +18,8 @@ habits, shortcuts) is saved **locally in your browser** on this machine.
 | **Web search** 🔎 | JARVIS has live internet access — ask about today's news, prices, scores, or any current fact and it searches the web and answers with what it finds. |
 | **Sight** 👁️ | Show JARVIS an image (upload, **camera** snapshot, **screen** capture, or paste), and it describes or analyzes what it sees. |
 | **Memory** 🧠 | Tell it things (*"remember I prefer morning workouts"*) and it keeps a durable, local memory it draws on in future chats. |
+| **Arc-reactor HUD** 💠 | The reactor in the hero is a live canvas visualizer — rotating HUD ticks, arc segments, and reactive waveforms that surge when JARVIS is listening or speaking. |
+| **Proactive updates** 📣 | JARVIS speaks up on its own: it announces Google Calendar events ~10 minutes out, remarks when a focus session ends, and voices reminders — toggle in Settings. |
 | **Morning brief** ☀️ | Tap **Brief me** and JARVIS reads you a spoken rundown: greeting, date, weather, your tasks, today's events, and reminders. Offers itself once a day. |
 | **Reminders** ⏰ | Ask JARVIS to set one; it fires a desktop notification, a spoken alert, and an on-screen toast when due. |
 | **Command bar** | Type anything: `add task call mom`, `weather`, `search rocket league`, a URL, `jarvis plan my day`, or a plain question. Press `/` to jump to it. |

@@ -38,6 +38,7 @@
     J.setAccent(J.state().accent || "#38e8ff");
 
     runBoot(() => {
+      J.initHud();
       J.initClock();
       J.initTasks();
       J.initHabits();

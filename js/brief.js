@@ -50,6 +50,27 @@
     const now = Date.now();
     const due = J.state().reminders.filter(r => r.at <= now);
     due.forEach(fire);
+    announceUpcoming();
+  }
+
+  // Proactively announce Google Calendar events starting soon (once each).
+  const announced = new Set();
+  function announceUpcoming() {
+    if (!J.state().proactive) return;
+    const now = Date.now();
+    (J.googleEvents || []).forEach(ev => {
+      const start = new Date(ev.start).getTime();
+      const mins = Math.round((start - now) / 60000);
+      if (mins >= 0 && mins <= 10 && !announced.has(ev.id)) {
+        announced.add(ev.id);
+        const when = mins <= 1 ? "now" : "in " + mins + " minutes";
+        J.toast("🗓 " + ev.title + " — " + when);
+        if ("Notification" in window && Notification.permission === "granted") {
+          try { new Notification("Upcoming: " + ev.title, { body: when }); } catch (e) {}
+        }
+        J.speak && J.speak((J.state().address || "sir") + ", " + ev.title + " " + (mins <= 1 ? "is starting now." : "starts in " + mins + " minutes."));
+      }
+    });
   }
 
   // ---------------- Morning brief ----------------

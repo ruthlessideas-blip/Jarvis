@@ -36,9 +36,9 @@
     const u = new SpeechSynthesisUtterance(t);
     const v = pickVoice(); if (v) u.voice = v;
     u.rate = 1.03; u.pitch = 1.0; u.volume = 1;
-    speaking = true;
+    speaking = true; J.voiceState = "speaking";
     status("speaking", "JARVIS speaking…");
-    u.onend = u.onerror = () => { speaking = false; status(listening ? "listening" : "", listening ? "Listening — say “Hey JARVIS”" : ""); };
+    u.onend = u.onerror = () => { speaking = false; J.voiceState = listening ? "listening" : "idle"; status(listening ? "listening" : "", listening ? "Listening — say “Hey JARVIS”" : ""); };
     synth.speak(u);
   };
   J.stopSpeaking = () => { if (synth) synth.cancel(); speaking = false; };
@@ -81,7 +81,7 @@
   }
 
   function stopListening() {
-    listening = false;
+    listening = false; J.voiceState = "idle";
     if (rec) { try { rec.abort(); } catch (e) {} rec = null; }
     J.state().wake = false; J.save();
     paintMic(); status("", "");
@@ -89,7 +89,7 @@
   function startListening() {
     if (!SR) { J.toast("Voice input needs Chrome/Edge over http or localhost."); return; }
     if (!startRec()) return;
-    listening = true;
+    listening = true; if (!speaking) J.voiceState = "listening";
     J.state().wake = true; J.save();
     paintMic(); status("listening", "Listening — say “Hey JARVIS”");
     J.speak("Online.");
