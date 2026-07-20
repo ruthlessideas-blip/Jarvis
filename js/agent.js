@@ -153,7 +153,9 @@
       open.length ? `Open tasks: ${open.slice(0, 12).join("; ")}.` : `No open tasks.`,
       todayEv.length ? `Events today: ${todayEv.join("; ")}.` : ``,
       J.lastWeather ? `Weather: ${J.lastWeather}` : ``,
-      s.memory.length ? `Things you remember about ${name}: ${s.memory.join(" | ")}.` : ``
+      s.memory.length ? `Things you remember about ${name}: ${s.memory.join(" | ")}.` : ``,
+      J.empireContext ? "\n--- RUTHLESS IDEAS ---\n" + J.empireContext() : ``,
+      (J.patriciaContext && J.patriciaContext()) ? "\n--- PATRICIA ---\n" + J.patriciaContext() : ``
     ].filter(Boolean).join("\n");
   };
 

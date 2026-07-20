@@ -615,9 +615,41 @@ kbd {
 .chat-sub.warn { color: var(--warn); }
 .chat-sub.good { color: var(--good); }
 
+/* ---------- Empire + Patricia (business layer) ---------- */
+.grid-empire { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; padding: 8px 32px 4px; align-items: start; }
+.priority-banner {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 14px;
+  background: linear-gradient(90deg, var(--accent-soft), transparent); border: 1px solid var(--accent-line);
+  border-radius: 12px;
+}
+.pri-flag { font-size: 11px; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; flex: none; }
+.priority-banner b { font-size: 14px; }
+.empire-products { display: flex; flex-direction: column; }
+.prod-row {
+  display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--text);
+}
+.prod-row:last-child { border-bottom: none; }
+.prod-row:hover { background: rgba(255,255,255,0.015); }
+.prod-name { font-weight: 600; font-size: 13.5px; width: 78px; flex: none; }
+.prod-tag { flex: 1; }
+.pstat { font-size: 11px; flex: none; }
+.pstat.good { color: var(--good); }
+.pstat.warn { color: var(--warn); }
+.pstat.muted { color: var(--muted); }
+
+#patriciaCard .card-head { align-items: flex-start; }
+.pat-brief, .pat-nudges { margin-top: 4px; }
+.pat-nudges { margin-top: 12px; }
+.pat-label { text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.pat-brief-text { font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+.pat-nudge { font-size: 13px; line-height: 1.6; }
+#patriciaBody code { font-family: var(--mono); font-size: 11px; background: rgba(255,255,255,0.05); padding: 1px 5px; border-radius: 4px; color: var(--accent); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .grid { grid-template-columns: 1fr 1fr; }
+  .grid-empire { grid-template-columns: 1fr; }
   .center-col { grid-column: 1 / -1; order: -1; }
   .grid-bottom { grid-template-columns: 1fr; }
 }
@@ -628,7 +660,7 @@ kbd {
   .hero { flex-direction: column-reverse; align-items: flex-start; padding: 24px 20px; }
   .hero-right { align-self: center; }
   .greeting { font-size: 30px; }
-  .grid, .grid-bottom, .foot, .hero { padding-left: 18px; padding-right: 18px; }
+  .grid, .grid-bottom, .grid-empire, .foot, .hero { padding-left: 18px; padding-right: 18px; }
   .clock-mini { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -77,6 +77,38 @@
     </div>
   </section>
 
+  <!-- Empire + Patricia (the business layer) -->
+  <section class="grid-empire">
+    <article class="card" id="empireCard">
+      <div class="card-head">
+        <h2>Ruthless Ideas</h2>
+        <button class="pill primary" id="draftDmBtn">✍ Draft Boston DMs</button>
+      </div>
+      <div class="priority-banner">
+        <span class="pri-flag">🎯 Priority</span>
+        <div>
+          <b>First paying Boston customer</b>
+          <div class="muted tiny" id="priorityAction"></div>
+        </div>
+      </div>
+      <div class="empire-products" id="empireProducts"></div>
+    </article>
+
+    <article class="card" id="patriciaCard">
+      <div class="card-head">
+        <div class="chat-title">
+          <div class="reactor tiny"><span></span><span></span><span></span></div>
+          <div>
+            <div class="chat-name">PATRICIA</div>
+            <div class="chat-sub muted tiny" id="patriciaStatus">connecting…</div>
+          </div>
+        </div>
+        <button class="ghost-btn" id="patriciaRetry" title="Reconnect">↻</button>
+      </div>
+      <div id="patriciaBody"></div>
+    </article>
+  </section>
+
   <!-- Main grid -->
   <main class="grid">
     <!-- Column A -->
@@ -413,6 +445,8 @@
   <script src="js/calendar.js"></script>
   <script src="js/markets.js"></script>
   <script src="js/google.js"></script>
+  <script src="js/empire.js"></script>
+  <script src="js/patricia.js"></script>
   <script src="js/agent.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/vision.js"></script>

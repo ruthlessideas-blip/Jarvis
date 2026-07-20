@@ -36,6 +36,8 @@
   function boot() {
     // Apply saved accent immediately so boot matches theme
     J.setAccent(J.state().accent || "#38e8ff");
+    // Personalize for Auston on a fresh install (never overrides an existing name)
+    if (!J.state().name) { J.state().name = "Auston"; J.save(); }
 
     runBoot(() => {
       J.initHud();
@@ -57,6 +59,8 @@
       J.initBrief();
       J.initGoogle();
       J.initMission();
+      J.initEmpire();
+      J.initPatricia();
       J.initCommand();
       J.initSettings();
 
