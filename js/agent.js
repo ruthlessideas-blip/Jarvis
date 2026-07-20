@@ -46,7 +46,11 @@
     { name: "search_email", description: "Search the user's Gmail and return matching messages (Gmail search syntax allowed).",
       input_schema: { type: "object", properties: { query: { type: "string" } }, required: ["query"] } },
     { name: "send_email", description: "Send an email from the user's Gmail account. Confirm the recipient and content with the user first unless they were explicit.",
-      input_schema: { type: "object", properties: { to: { type: "string" }, subject: { type: "string" }, body: { type: "string" } }, required: ["to", "subject", "body"] } }
+      input_schema: { type: "object", properties: { to: { type: "string" }, subject: { type: "string" }, body: { type: "string" } }, required: ["to", "subject", "body"] } },
+    { name: "request_build", description: "When you need Auston to BUILD or CREATE something you can't make yourself (an app, script, page, file, design, deploy), queue a Build Request. He builds it in the Claude Code app and pastes the result back for you to use. Give a clear title and a COMPLETE spec: what to build, why, and what 'done' looks like.",
+      input_schema: { type: "object", properties: { title: { type: "string" }, spec: { type: "string", description: "Full brief: what to build, why it matters, and acceptance criteria." } }, required: ["title", "spec"] } },
+    { name: "list_builds", description: "List the current build requests and any results Auston has delivered back.",
+      input_schema: { type: "object", properties: {} } }
   ];
 
   // Server-side tools — run on Anthropic's infrastructure (no local executor).
@@ -119,7 +123,11 @@
     send_email: async (i) => {
       try { await J.gmailSend(i.to, i.subject, i.body); return `Email sent to ${i.to}.`; }
       catch (e) { return "Gmail: " + e.message; }
-    }
+    },
+    request_build: (i) => J.addBuild(i.title, i.spec)
+      ? `Queued a build for Auston: “${i.title}”. It's in the Build Queue — open Claude Code, build it, and paste the result back so I can use it.`
+      : "Give a title and a spec.",
+    list_builds: () => J.listBuilds ? J.listBuilds() : "No builds."
   };
 
   J.runTool = async function (name, input) {
@@ -154,7 +162,9 @@
       todayEv.length ? `Events today: ${todayEv.join("; ")}.` : ``,
       J.lastWeather ? `Weather: ${J.lastWeather}` : ``,
       s.memory.length ? `Things you remember about ${name}: ${s.memory.join(" | ")}.` : ``,
+      "You can DIRECT Auston to build things you need: when a task requires an app/script/page/file/design you can't make yourself, use request_build to queue a clear brief. He builds it in Claude Code (flat-rate) and pastes the result back for you to use. Prefer this over saying \"I can't build that\".",
       J.empireContext ? "\n--- RUTHLESS IDEAS ---\n" + J.empireContext() : ``,
+      (J.buildsContext && J.buildsContext()) ? "\n--- BUILD QUEUE ---\n" + J.buildsContext() : ``,
       (J.patriciaContext && J.patriciaContext()) ? "\n--- PATRICIA ---\n" + J.patriciaContext() : ``
     ].filter(Boolean).join("\n");
   };

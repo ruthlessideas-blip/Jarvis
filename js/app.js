@@ -60,6 +60,7 @@
       J.initGoogle();
       J.initMission();
       J.initEmpire();
+      J.initBuilds();
       J.initPatricia();
       J.initCommand();
       J.initSettings();

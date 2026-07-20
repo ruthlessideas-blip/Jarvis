@@ -43,7 +43,8 @@ window.J = window.J || {};
     googleConnected: false,     // hint to auto-reconnect silently on load
     proactive: true,            // JARVIS volunteers spoken updates (events, focus)
     model: "haiku",             // brain: "ollama" (free) | "haiku" (cheap) | "sonnet" (turbo)
-    ollamaModel: "llama3.1"     // which local model Ollama runs
+    ollamaModel: "llama3.1",    // which local model Ollama runs
+    builds: []                  // JARVIS→Auston build requests: {id,title,spec,status,result,created}
   };
 
   let state = load();
